@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Modern Professional Light Theme */
+    --background: 0 0% 99%;
+    --foreground: 215 25% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+    --primary: 212 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 20% 98%;
+    --secondary-foreground: 215 25% 15%;
+    --muted: 210 20% 97%;
+    --muted-foreground: 215 15% 45%;
+    --accent: 213 95% 95%;
+    --accent-foreground: 212 100% 45%;
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 20% 90%;
+    --input: 214 20% 95%;
+    --ring: 212 100% 50%;
+    --radius: 0.75rem;
+    
+    /* Modern Sidebar Colors */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 25% 20%;
+    --sidebar-primary: 212 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 97%;
+    --sidebar-accent-foreground: 215 25% 15%;
+    --sidebar-border: 214 20% 92%;
+    --sidebar-ring: 212 100% 50%;
+    
+    /* Success Colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    
+    /* Warning Colors */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    
+    /* Info Colors */
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+  }
+
+  .dark {
+    /* Enhanced Dark Theme */
+    --background: 220 15% 8%;
+    --foreground: 210 20% 90%;
+    --card: 220 15% 10%;
+    --card-foreground: 210 20% 90%;
+    --popover: 220 15% 10%;
+    --popover-foreground: 210 20% 90%;
+    --primary: 212 100% 60%;
+    --primary-foreground: 220 15% 8%;
+    --secondary: 220 10% 15%;
+    --secondary-foreground: 210 20% 85%;
+    --muted: 220 10% 12%;
+    --muted-foreground: 215 15% 55%;
+    --accent: 220 10% 15%;
+    --accent-foreground: 212 100% 60%;
+    --destructive: 0 75% 65%;
+    --destructive-foreground: 220 15% 8%;
+    --border: 220 10% 18%;
+    --input: 220 10% 15%;
+    --ring: 212 100% 60%;
+    
+    /* Dark Sidebar Colors */
+    --sidebar-background: 220 15% 6%;
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 212 100% 60%;
+    --sidebar-primary-foreground: 220 15% 6%;
+    --sidebar-accent: 220 10% 12%;
+    --sidebar-accent-foreground: 210 20% 85%;
+    --sidebar-border: 220 10% 15%;
+    --sidebar-ring: 212 100% 60%;
+    
+    /* Dark Success Colors */
+    --success: 142 70% 45%;
+    --success-foreground: 220 15% 8%;
+    
+    /* Dark Warning Colors */
+    --warning: 38 85% 55%;
+    --warning-foreground: 220 15% 8%;
+    
+    /* Dark Info Colors */
+    --info: 199 80% 55%;
+    --info-foreground: 220 15% 8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    /* Prevent flash of unstyled content */
+    color-scheme: light dark;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    /* Ensure smooth theme transitions */
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Ensure all interactive elements follow theme */
+  button, input, select, textarea {
+    @apply bg-background text-foreground;
+  }
+  
+  /* Ensure proper theme inheritance */
+  * {
+    border-color: hsl(var(--border));
+  }
+}
+
+/* Arabic/RTL specific styles */
+html[dir="rtl"] {
+  direction: rtl;
+}
+
+/* Modern Professional Styling */
+.gradient-bg {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(212 100% 60%) 100%);
+}
+
+.stats-card {
+  @apply bg-gradient-to-br from-white to-blue-50/50 dark:from-card dark:to-blue-950/20 
+         border border-border/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-200
+         backdrop-blur-sm;
+}
+
+.success-card {
+  @apply bg-gradient-to-br from-white to-green-50/50 dark:from-card dark:to-green-950/20 
+         border border-green-200/50 dark:border-green-800/50;
+}
+
+.warning-card {
+  @apply bg-gradient-to-br from-white to-amber-50/50 dark:from-card dark:to-amber-950/20 
+         border border-amber-200/50 dark:border-amber-800/50;
+}
+
+.info-card {
+  @apply bg-gradient-to-br from-white to-cyan-50/50 dark:from-card dark:to-cyan-950/20 
+         border border-cyan-200/50 dark:border-cyan-800/50;
+}
+
+.glass-effect {
+  @apply bg-card/80 backdrop-blur-md border border-border/50;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/30;
+}
+
+/* Print styles for reports */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-header {
+    @apply text-center mb-8;
+  }
+  
+  .print-logo {
+    @apply mx-auto mb-4;
+  }
+}
