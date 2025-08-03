@@ -29,6 +29,11 @@ export default function ReportsPage() {
   });
   const [reportFormat, setReportFormat] = useState<"pdf" | "excel" | "csv">("pdf");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const stats = getStats();
 
@@ -66,21 +71,8 @@ export default function ReportsPage() {
       color: "orange",
       data: {
         rate: `${stats.occupancyRate}%`,
-        avgRent: `${stats.averageRent.toLocaleString()} د.ع`,
         efficiency: `${Math.round((stats.occupiedApartments / stats.totalApartments) * 100)}%`,
-      },
-    },
-    {
-      id: "financial-summary",
-      title: "التقرير المالي",
-      description: "الإيرادات والتكاليف المتعلقة بالسكن",
-      icon: TrendingUp,
-      color: "purple",
-      data: {
-        monthlyRevenue: mockApartments
-          .filter(apt => apt.status === "occupied")
-          .reduce((sum, apt) => sum + apt.monthlyRent, 0),
-        averageIncome: Math.round(mockFamilies.reduce((sum, f) => sum + f.monthlyIncome, 0) / mockFamilies.length),
+        utilization: "عالية",
       },
     },
   ];
@@ -144,8 +136,10 @@ export default function ReportsPage() {
     setIsGenerating(false);
   };
 
-  const formatCurrency = (amount: number) => {
-    return amount.toLocaleString() + " د.ع";
+
+  const formatNumber = (num: number) => {
+    if (!mounted) return "---";
+    return num.toLocaleString();
   };
 
   const getColorClasses = (color: string) => {
@@ -176,62 +170,11 @@ export default function ReportsPage() {
         </Button>
       </div>
 
-      {/* Quick Statistics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div className="bg-card rounded-xl p-6 border border-border">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
-              <FileText className="w-6 h-6 text-blue-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">24</p>
-              <p className="text-sm text-muted-foreground">تقرير هذا الشهر</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-card rounded-xl p-6 border border-border">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center">
-              <Download className="w-6 h-6 text-green-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">156</p>
-              <p className="text-sm text-muted-foreground">تم تنزيلها</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-card rounded-xl p-6 border border-border">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-orange-100 dark:bg-orange-900/20 flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-orange-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{stats.occupancyRate}%</p>
-              <p className="text-sm text-muted-foreground">نسبة الإشغال</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-card rounded-xl p-6 border border-border">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-purple-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-foreground">{formatCurrency(stats.averageRent)}</p>
-              <p className="text-sm text-muted-foreground">متوسط الإيجار</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Report Generation */}
         <div className="lg:col-span-2 space-y-6">
           {/* Report Type Selection */}
-          <Card>
+          <Card className="enhanced-card border-0 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="w-5 h-5" />
@@ -267,7 +210,7 @@ export default function ReportsPage() {
                           <div className="flex flex-wrap gap-2 mt-3">
                             {Object.entries(report.data).slice(0, 2).map(([key, value]) => (
                               <Badge key={key} variant="secondary" className="text-xs">
-                                {typeof value === "number" ? value.toLocaleString() : value}
+                                {typeof value === "number" ? formatNumber(value) : value}
                               </Badge>
                             ))}
                           </div>
@@ -285,7 +228,7 @@ export default function ReportsPage() {
 
           {/* Report Configuration */}
           {selectedReport && (
-            <Card>
+            <Card className="enhanced-card border-0 shadow-xl">
               <CardHeader>
                 <CardTitle>إعدادات التقرير</CardTitle>
                 <CardDescription>
@@ -372,7 +315,7 @@ export default function ReportsPage() {
 
         {/* Recent Reports Sidebar */}
         <div>
-          <Card>
+          <Card className="enhanced-card border-0 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="w-5 h-5" />

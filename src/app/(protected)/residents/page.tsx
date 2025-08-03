@@ -104,77 +104,6 @@ export default function ResidentsPage() {
         </div>
       </div>
 
-      {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Users className="w-8 h-8 text-blue-600" />
-              <div>
-                <p className="text-2xl font-bold">{residents.length}</p>
-                <p className="text-sm text-muted-foreground">إجمالي المنتسبين</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Heart className="w-8 h-8 text-pink-600" />
-              <div>
-                <p className="text-2xl font-bold">
-                  {residents.filter(r => r.maritalStatus === "married").length}
-                </p>
-                <p className="text-sm text-muted-foreground">متزوجين</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Building2 className="w-8 h-8 text-green-600" />
-              <div>
-                <p className="text-2xl font-bold">
-                  {residents.filter(r => r.apartmentId).length}
-                </p>
-                <p className="text-sm text-muted-foreground">لديهم سكن</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Baby className="w-8 h-8 text-purple-600" />
-              <div>
-                <p className="text-2xl font-bold">
-                  {residents.reduce((sum, r) => sum + r.numberOfChildren, 0)}
-                </p>
-                <p className="text-sm text-muted-foreground">إجمالي الأطفال</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <DollarSign className="w-8 h-8 text-yellow-600" />
-              <div>
-                <p className="text-2xl font-bold">
-                  {Math.round(residents.reduce((sum, r) => sum + r.salary, 0) / residents.length / 1000)}K
-                </p>
-                <p className="text-sm text-muted-foreground">متوسط الراتب</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Filters and Search */}
       <Card>
         <CardContent className="p-4">
@@ -374,7 +303,6 @@ export default function ResidentsPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-4 h-4 text-muted-foreground" />
-                      <span>{formatCurrency(resident.salary)}</span>
                     </div>
                   </div>
                   

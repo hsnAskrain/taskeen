@@ -16,7 +16,6 @@ import {
   Home,
   Users,
   Calendar,
-  DollarSign,
   MapPin,
   Settings,
   Eye,
@@ -114,9 +113,6 @@ export default function ApartmentsPage() {
     }
   };
 
-  const formatCurrency = (amount: number) => {
-    return amount.toLocaleString() + " د.ع";
-  };
 
   return (
     <div className="space-y-8">
@@ -285,10 +281,10 @@ export default function ApartmentsPage() {
         {filteredApartments.map((apartment) => {
           const getStatusStyle = (status: string) => {
             switch (status) {
-              case 'occupied': return 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20';
-              case 'vacant': return 'border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20';
-              case 'maintenance': return 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20';
-              default: return 'border-border bg-muted/30';
+              case 'occupied': return 'border-green-300 bg-gradient-to-br from-green-50 via-green-50 to-green-100 dark:border-green-700 dark:bg-gradient-to-br dark:from-green-900/30 dark:to-green-800/20 text-green-900 dark:text-green-100';
+              case 'vacant': return 'border-amber-300 bg-gradient-to-br from-amber-50 via-amber-50 to-amber-100 dark:border-amber-700 dark:bg-gradient-to-br dark:from-amber-900/30 dark:to-amber-800/20 text-amber-900 dark:text-amber-100';
+              case 'maintenance': return 'border-red-300 bg-gradient-to-br from-red-50 via-red-50 to-red-100 dark:border-red-700 dark:bg-gradient-to-br dark:from-red-900/30 dark:to-red-800/20 text-red-900 dark:text-red-100';
+              default: return 'border-slate-300 bg-gradient-to-br from-slate-50 via-slate-50 to-slate-100 dark:border-slate-700 dark:bg-gradient-to-br dark:from-slate-800/30 dark:to-slate-700/20 text-slate-900 dark:text-slate-100';
             }
           };
 
@@ -297,18 +293,18 @@ export default function ApartmentsPage() {
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
-                    <CardTitle className="text-xl font-bold flex items-center gap-2">
+                    <CardTitle className="text-xl font-bold flex items-center gap-2 text-foreground">
                       {apartment.number}
                       <div className="w-2 h-2 rounded-full bg-primary"></div>
                     </CardTitle>
-                    <CardDescription className="flex items-center gap-2 text-base">
+                    <CardDescription className="flex items-center gap-2 text-base text-foreground/80 font-medium">
                       <MapPin className="w-4 h-4" />
                       {apartment.building} - الطابق {apartment.floor}
                     </CardDescription>
                   </div>
                   <div className="text-right">
                     {getStatusBadge(apartment.status)}
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-foreground/70 font-medium mt-1">
                       {apartment.status === 'occupied' ? 'مشغولة' : 
                        apartment.status === 'vacant' ? 'متاحة' : 'تحت الصيانة'}
                     </p>
@@ -319,55 +315,47 @@ export default function ApartmentsPage() {
               <CardContent className="space-y-6">
                 {/* Enhanced Apartment Details */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                      <Home className="w-4 h-4 text-blue-600" />
+                  <div className="flex items-center gap-3 p-3 bg-blue-50/70 dark:bg-blue-900/30 rounded-lg border border-blue-200/50 dark:border-blue-700/50">
+                    <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800/60 rounded-lg flex items-center justify-center">
+                      <Home className="w-4 h-4 text-blue-600 dark:text-blue-300" />
                     </div>
                     <div>
-                      <p className="font-semibold">{apartment.rooms}</p>
-                      <p className="text-xs text-muted-foreground">غرف</p>
+                      <p className="font-bold text-foreground">{apartment.rooms}</p>
+                      <p className="text-xs text-foreground/70 font-medium">غرف</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                    <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                      <MapPin className="w-4 h-4 text-green-600" />
+                  <div className="flex items-center gap-3 p-3 bg-green-50/70 dark:bg-green-900/30 rounded-lg border border-green-200/50 dark:border-green-700/50">
+                    <div className="w-8 h-8 bg-green-100 dark:bg-green-800/60 rounded-lg flex items-center justify-center">
+                      <MapPin className="w-4 h-4 text-green-600 dark:text-green-300" />
                     </div>
                     <div>
-                      <p className="font-semibold">{apartment.area}</p>
-                      <p className="text-xs text-muted-foreground">م²</p>
+                      <p className="font-bold text-foreground">{apartment.area}</p>
+                      <p className="text-xs text-foreground/70 font-medium">م²</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Rent and Maintenance Info */}
+                {/* Maintenance Info */}
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="w-5 h-5 text-blue-600" />
-                      <span className="text-sm font-medium">الإيجار الشهري</span>
-                    </div>
-                    <span className="font-bold text-lg text-blue-600">{formatCurrency(apartment.monthlyRent)}</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="w-4 h-4" />
+                  <div className="flex items-center gap-2 text-sm text-foreground/80 font-medium p-3 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800/40 dark:to-slate-700/40 rounded-lg border border-slate-200/50 dark:border-slate-600/50">
+                    <Calendar className="w-4 h-4 text-slate-600 dark:text-slate-300" />
                     <span>آخر صيانة: {new Date(apartment.lastMaintenanceDate).toLocaleDateString("ar-IQ")}</span>
                   </div>
                 </div>
                 
                 {/* Enhanced Resident Info */}
                 {apartment.status === "occupied" && apartment.residentId && (
-                  <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border border-green-200 dark:border-green-800">
+                  <div className="p-4 bg-gradient-to-r from-green-50 via-green-50 to-emerald-50 dark:from-green-900/30 dark:via-green-800/30 dark:to-emerald-900/30 rounded-xl border-2 border-green-300/60 dark:border-green-600/60">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
-                        <Users className="w-5 h-5 text-green-600" />
+                      <div className="w-10 h-10 bg-green-100 dark:bg-green-800/60 rounded-full flex items-center justify-center">
+                        <Users className="w-5 h-5 text-green-600 dark:text-green-300" />
                       </div>
                       <div>
-                        <p className="font-semibold text-green-800 dark:text-green-200">
+                        <p className="font-bold text-green-900 dark:text-green-100">
                           {getResidentName(apartment.residentId)}
                         </p>
-                        <p className="text-xs text-green-600 dark:text-green-400">
+                        <p className="text-xs text-green-700 dark:text-green-200 font-medium">
                           ساكن منذ: {apartment.occupiedSince ? new Date(apartment.occupiedSince).toLocaleDateString("ar-IQ") : "غير محدد"}
                         </p>
                       </div>
@@ -377,13 +365,13 @@ export default function ApartmentsPage() {
                 
                 {/* Enhanced Amenities */}
                 <div className="space-y-2">
-                  <p className="text-sm font-semibold flex items-center gap-2">
-                    <Settings className="w-4 h-4" />
+                  <p className="text-sm font-bold flex items-center gap-2 text-foreground">
+                    <Settings className="w-4 h-4 text-primary" />
                     المرافق والخدمات:
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {apartment.amenities.map((amenity, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs px-2 py-1">
+                      <Badge key={index} variant="secondary" className="text-xs px-3 py-1 bg-primary/10 text-primary border border-primary/20 font-medium">
                         {amenity}
                       </Badge>
                     ))}

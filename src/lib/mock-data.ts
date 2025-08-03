@@ -6,7 +6,6 @@ export interface Apartment {
   rooms: number;
   area: number; // in square meters
   status: "occupied" | "vacant" | "maintenance";
-  monthlyRent: number;
   amenities: string[];
   lastMaintenanceDate: string;
   occupiedSince?: string;
@@ -27,7 +26,6 @@ export interface Resident {
   numberOfChildren: number;
   apartmentId?: string;
   joinDate: string;
-  salary: number;
   emergencyContact: {
     name: string;
     relationship: string;
@@ -41,7 +39,6 @@ export interface Family {
   apartmentId: string;
   members: FamilyMember[];
   totalMembers: number;
-  monthlyIncome: number;
   specialNeeds?: string;
 }
 
@@ -65,7 +62,6 @@ export const mockApartments: Apartment[] = [
     rooms: 3,
     area: 120,
     status: "occupied",
-    monthlyRent: 250000,
     amenities: ["مكيف", "سخان مياه", "مطبخ مجهز", "انترنت"],
     lastMaintenanceDate: "2024-01-15",
     occupiedSince: "2023-03-10",
@@ -79,7 +75,6 @@ export const mockApartments: Apartment[] = [
     rooms: 2,
     area: 90,
     status: "vacant",
-    monthlyRent: 200000,
     amenities: ["مكيف", "سخان مياه", "انترنت"],
     lastMaintenanceDate: "2024-02-01",
   },
@@ -91,7 +86,6 @@ export const mockApartments: Apartment[] = [
     rooms: 4,
     area: 150,
     status: "occupied",
-    monthlyRent: 350000,
     amenities: ["مكيف", "سخان مياه", "مطبخ مجهز", "انترنت", "شرفة"],
     lastMaintenanceDate: "2023-12-20",
     occupiedSince: "2023-08-15",
@@ -105,7 +99,6 @@ export const mockApartments: Apartment[] = [
     rooms: 3,
     area: 130,
     status: "maintenance",
-    monthlyRent: 280000,
     amenities: ["مكيف", "سخان مياه", "مطبخ مجهز", "انترنت"],
     lastMaintenanceDate: "2024-02-20",
   },
@@ -117,7 +110,6 @@ export const mockApartments: Apartment[] = [
     rooms: 2,
     area: 85,
     status: "occupied",
-    monthlyRent: 190000,
     amenities: ["مكيف", "سخان مياه"],
     lastMaintenanceDate: "2024-01-10",
     occupiedSince: "2023-11-01",
@@ -131,7 +123,6 @@ export const mockApartments: Apartment[] = [
     rooms: 3,
     area: 125,
     status: "vacant",
-    monthlyRent: 270000,
     amenities: ["مكيف", "سخان مياه", "مطبخ مجهز", "انترنت", "شرفة"],
     lastMaintenanceDate: "2024-02-05",
   },
@@ -153,7 +144,6 @@ export const mockResidents: Resident[] = [
     numberOfChildren: 2,
     apartmentId: "apt-001",
     joinDate: "2021-05-15",
-    salary: 1200000,
     emergencyContact: {
       name: "فاطمة حسن الحسيني",
       relationship: "زوجة",
@@ -174,7 +164,6 @@ export const mockResidents: Resident[] = [
     numberOfChildren: 3,
     apartmentId: "apt-003",
     joinDate: "2020-09-10",
-    salary: 1350000,
     emergencyContact: {
       name: "زينب محمد الكاظمي",
       relationship: "زوجة",
@@ -195,31 +184,10 @@ export const mockResidents: Resident[] = [
     numberOfChildren: 1,
     apartmentId: "apt-005",
     joinDate: "2022-03-20",
-    salary: 950000,
     emergencyContact: {
       name: "مريم أحمد الصدر",
       relationship: "زوجة",
       phone: "+964-775-678-9012",
-    },
-  },
-  {
-    id: "res-004",
-    employeeId: "EMP-2023-089",
-    name: "محمد جعفر عبد الحسين",
-    rank: "ملازم أول",
-    department: "الأمن والحماية",
-    phoneNumber: "+964-776-789-0123",
-    email: "mohammed.jaafar@shrine.gov.iq",
-    nationalId: "19920815-321654",
-    dateOfBirth: "1992-08-15",
-    maritalStatus: "single",
-    numberOfChildren: 0,
-    joinDate: "2023-01-12",
-    salary: 800000,
-    emergencyContact: {
-      name: "جعفر عبد الحسين",
-      relationship: "والد",
-      phone: "+964-777-890-1234",
     },
   },
   {
@@ -235,7 +203,6 @@ export const mockResidents: Resident[] = [
     maritalStatus: "married",
     numberOfChildren: 2,
     joinDate: "2021-11-08",
-    salary: 1100000,
     emergencyContact: {
       name: "نور الهدى العلوي",
       relationship: "زوجة",
@@ -251,7 +218,6 @@ export const mockFamilies: Family[] = [
     residentId: "res-001",
     apartmentId: "apt-001",
     totalMembers: 4,
-    monthlyIncome: 1200000,
     members: [
       {
         id: "mem-001",
@@ -282,7 +248,6 @@ export const mockFamilies: Family[] = [
     residentId: "res-002",
     apartmentId: "apt-003",
     totalMembers: 5,
-    monthlyIncome: 1350000,
     members: [
       {
         id: "mem-004",
@@ -320,7 +285,6 @@ export const mockFamilies: Family[] = [
     residentId: "res-003",
     apartmentId: "apt-005",
     totalMembers: 3,
-    monthlyIncome: 950000,
     members: [
       {
         id: "mem-008",
@@ -344,7 +308,6 @@ export const mockFamilies: Family[] = [
     residentId: "res-005",
     apartmentId: "",
     totalMembers: 4,
-    monthlyIncome: 1100000,
     specialNeeds: "في قائمة الانتظار للحصول على سكن",
     members: [
       {
@@ -386,9 +349,6 @@ export function getStats() {
   const totalFamilyMembers = mockFamilies.reduce((sum, family) => sum + family.totalMembers, 0);
   
   const occupancyRate = Math.round((occupiedApartments / totalApartments) * 100);
-  const averageRent = Math.round(
-    mockApartments.reduce((sum, apt) => sum + apt.monthlyRent, 0) / totalApartments
-  );
 
   return {
     totalApartments,
@@ -400,6 +360,5 @@ export function getStats() {
     totalFamilies,
     totalFamilyMembers,
     occupancyRate,
-    averageRent,
   };
 }

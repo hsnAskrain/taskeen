@@ -16,7 +16,10 @@ import {
   DollarSign,
   ArrowRight,
   FileText,
+  PieChart,
+  BarChart3,
 } from "lucide-react";
+import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -44,8 +47,8 @@ export default function DashboardPage() {
     {
       id: 3,
       type: "new_resident",
-      title: "منتسب جديد",
-      description: "تم إضافة منتسب جديد: محمد جعفر عبد الحسين",
+      title: "تحديث ملف منتسب",
+      description: "تم تحديث ملف منتسب: علي حسن جواد الكاظمي",
       time: "أمس",
       icon: Users,
       status: "info",
@@ -61,11 +64,11 @@ export default function DashboardPage() {
     },
     {
       id: 5,
-      type: "payment",
-      title: "دفعة إيجار جديدة",
-      description: "تم استلام دفعة إيجار من الشقة A-201",
+      type: "family",
+      title: "عائلة جديدة مسجلة",
+      description: "تم تسجيل عائلة جديدة في النظام - 4 أفراد",
       time: "منذ 3 ساعات",
-      icon: DollarSign,
+      icon: Users,
       status: "success",
     },
   ];
@@ -116,12 +119,25 @@ export default function DashboardPage() {
   // Enhanced statistics
   const enhancedStats = {
     ...stats,
-    monthlyRevenue: 12500000,
     pendingApplications: 12,
     maintenanceRequests: 7,
     occupancyTrend: 5.2,
     revenueGrowth: 8.5,
   };
+
+  // Chart data
+  const apartmentData = [
+    { name: ' مشغولة', value: enhancedStats.occupiedApartments, color: '#22c55e' },
+    { name: ' فارغة', value: enhancedStats.vacantApartments, color: '#f59e0b' },
+    { name: ' صيانة', value: enhancedStats.maintenanceApartments, color: '#ef4444' },
+  ];
+
+  const familyStatsData = [
+    { name: 'العائلات', value: enhancedStats.totalFamilies, fill: '#3b82f6' },
+    { name: 'المنتسبين', value: enhancedStats.totalResidents, fill: '#22c55e' },
+    { name: 'أفراد العائلات', value: enhancedStats.totalFamilyMembers, fill: '#f59e0b' },
+    { name: 'المهام المعلقة', value: pendingTasks.length, fill: '#06b6d4' },
+  ];
 
   return (
     <div className="space-y-8">
@@ -129,92 +145,189 @@ export default function DashboardPage() {
       {/* Enhanced Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Apartments */}
-        <Card className="stats-card hover:shadow-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">إجمالي الشقق</CardTitle>
-            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
-              <Building2 className="h-6 w-6 text-blue-600" />
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="text-3xl font-bold">{enhancedStats.totalApartments}</div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm text-muted-foreground">
-                نسبة الإشغال: %{enhancedStats.occupancyRate}
-              </span>
-            </div>
-            <div className="flex gap-2">
-              <Badge className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                مشغولة: {enhancedStats.occupiedApartments}
-              </Badge>
-              <Badge variant="secondary">
-                فارغة: {enhancedStats.vacantApartments}
-              </Badge>
+        <Card className="stats-card hover:shadow-xl transition-all duration-300 border-0">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Building2 className="h-7 w-7 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-4xl font-bold text-foreground">{enhancedStats.totalApartments}</div>
+                    <p className="text-base font-semibold text-blue-600 dark:text-blue-400">إجمالي الشقق</p>
+                  </div>
+                </div>
+                <div className="text-sm font-medium text-foreground/80">
+                  {enhancedStats.occupancyRate}% نسبة الإشغال
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Total Residents */}
-        <Card className="success-card hover:shadow-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">إجمالي المنتسبين</CardTitle>
-            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-xl flex items-center justify-center">
-              <Users className="h-6 w-6 text-green-600" />
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="text-3xl font-bold">{enhancedStats.totalResidents}</div>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-green-500" />
-              <span className="text-sm text-green-600">+{enhancedStats.occupancyTrend}% هذا الشهر</span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              متزوجين: {enhancedStats.marriedResidents} | عازبين: {enhancedStats.totalResidents - enhancedStats.marriedResidents}
+        <Card className="success-card hover:shadow-xl transition-all duration-300 border-0">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 bg-green-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Users className="h-7 w-7 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-4xl font-bold text-foreground">{enhancedStats.totalResidents}</div>
+                    <p className="text-base font-semibold text-green-600 dark:text-green-400">إجمالي المنتسبين</p>
+                  </div>
+                </div>
+                <div className="text-sm font-medium text-foreground/80">
+                  {enhancedStats.marriedResidents} متزوج
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Monthly Revenue */}
-        <Card className="warning-card hover:shadow-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">الإيرادات الشهرية</CardTitle>
-            <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/20 rounded-xl flex items-center justify-center">
-              <DollarSign className="h-6 w-6 text-amber-600" />
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="text-3xl font-bold">
-              {enhancedStats.monthlyRevenue.toLocaleString('en-US')} د.ع
-            </div>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-green-500" />
-              <span className="text-sm text-green-600">+{enhancedStats.revenueGrowth}% من الشهر الماضي</span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              متوسط الإيجار: {enhancedStats.averageRent.toLocaleString('en-US')} د.ع
+        {/* Family Management */}
+        <Card className="warning-card hover:shadow-xl transition-all duration-300 border-0">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Home className="h-7 w-7 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-4xl font-bold text-foreground">{enhancedStats.totalFamilies}</div>
+                    <p className="text-base font-semibold text-amber-600 dark:text-amber-400">إجمالي العائلات</p>
+                  </div>
+                </div>
+                <div className="text-sm font-medium text-foreground/80">
+                  {enhancedStats.totalFamilyMembers} عضو
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Pending Tasks */}
-        <Card className="info-card hover:shadow-lg transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">المهام المعلقة</CardTitle>
-            <div className="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/20 rounded-xl flex items-center justify-center">
-              <AlertTriangle className="h-6 w-6 text-cyan-600" />
+        <Card className="info-card hover:shadow-xl transition-all duration-300 border-0">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 bg-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <AlertTriangle className="h-7 w-7 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-4xl font-bold text-foreground">{pendingTasks.length}</div>
+                    <p className="text-base font-semibold text-cyan-600 dark:text-cyan-400">المهام المعلقة</p>
+                  </div>
+                </div>
+                <div className="text-sm font-medium text-foreground/80">
+                  {pendingTasks.filter(t => t.priority === 'high').length} عاجلة
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Apartment Occupancy Chart */}
+        <Card className="enhanced-card border-0 shadow-xl">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
+                <PieChart className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">توزيع الشقق السكنية</CardTitle>
+                <CardDescription>نسب الإشغال والحالات</CardDescription>
+              </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="text-3xl font-bold">{pendingTasks.length}</div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-              <span className="text-sm text-red-600">
-                {pendingTasks.filter(t => t.priority === 'high').length} مهمة عاجلة
-              </span>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <RechartsPieChart>
+                  <Pie
+                    data={apartmentData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={120}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {apartmentData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px',
+                      color: 'hsl(var(--foreground))'
+                    }}
+                  />
+                  <Legend />
+                </RechartsPieChart>
+              </ResponsiveContainer>
             </div>
-            <div className="text-sm text-muted-foreground">
-              طلبات السكن: {enhancedStats.pendingApplications} | صيانة: {enhancedStats.maintenanceRequests}
+            <div className="flex justify-center gap-6 mt-4">
+              {apartmentData.map((item, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <div 
+                    className="w-3 h-3 rounded-full" 
+                    style={{ backgroundColor: item.color }}
+                  ></div>
+                  <span className="text-sm font-medium text-foreground">
+                    {item.name}: {item.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Family & Residents Stats Chart */}
+        <Card className="enhanced-card border-0 shadow-xl">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-xl flex items-center justify-center">
+                <BarChart3 className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">إحصائيات النظام</CardTitle>
+                <CardDescription>المنتسبين والعائلات والمهام</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={familyStatsData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="hsl(var(--foreground))"
+                    fontSize={12}
+                  />
+                  <YAxis stroke="hsl(var(--foreground))" />
+                  <Tooltip 
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px',
+                      color: 'hsl(var(--foreground))'
+                    }}
+                  />
+                  <Bar dataKey="value" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>

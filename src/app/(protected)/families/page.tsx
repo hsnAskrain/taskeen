@@ -56,10 +56,6 @@ export default function FamiliesPage() {
     return mockApartments.find(a => a.id === apartmentId);
   };
 
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return amount.toLocaleString() + " د.ع";
-  };
 
   // Calculate statistics
   const stats = {
@@ -89,7 +85,7 @@ export default function FamiliesPage() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div className="bg-card rounded-xl p-6 border border-border">
+        <div className="stats-card p-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
               <Users className="w-6 h-6 text-blue-600" />
@@ -101,7 +97,7 @@ export default function FamiliesPage() {
           </div>
         </div>
         
-        <div className="bg-card rounded-xl p-6 border border-border">
+        <div className="success-card p-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center">
               <Home className="w-6 h-6 text-green-600" />
@@ -113,7 +109,7 @@ export default function FamiliesPage() {
           </div>
         </div>
         
-        <div className="bg-card rounded-xl p-6 border border-border">
+        <div className="warning-card p-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-lg bg-orange-100 dark:bg-orange-900/20 flex items-center justify-center">
               <Calendar className="w-6 h-6 text-orange-600" />
@@ -125,7 +121,7 @@ export default function FamiliesPage() {
           </div>
         </div>
         
-        <div className="bg-card rounded-xl p-6 border border-border">
+        <div className="purple-card p-6">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center">
               <User className="w-6 h-6 text-purple-600" />
@@ -139,7 +135,7 @@ export default function FamiliesPage() {
       </div>
 
       {/* Search and Filter */}
-      <Card>
+      <Card className="enhanced-card border-0 shadow-lg">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1 relative">
@@ -172,7 +168,7 @@ export default function FamiliesPage() {
           const apartment = family.apartmentId ? getApartmentInfo(family.apartmentId) : null;
           
           return (
-            <Card key={family.id} className="hover:shadow-lg transition-all duration-200 border border-border">
+            <Card key={family.id} className="enhanced-card border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -238,7 +234,7 @@ export default function FamiliesPage() {
                         </span>
                       </div>
                       <p className="text-muted-foreground">
-                        {apartment.rooms} غرف • {apartment.area} م² • {formatCurrency(apartment.monthlyRent)}
+                        {apartment.rooms} غرف • {apartment.area} م²
                       </p>
                     </div>
                   ) : (
@@ -289,7 +285,7 @@ export default function FamiliesPage() {
 
       {/* No Results */}
       {filteredFamilies.length === 0 && (
-        <Card>
+        <Card className="enhanced-card border-0 shadow-lg">
           <CardContent className="text-center py-12">
             <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-xl font-medium text-foreground mb-2">

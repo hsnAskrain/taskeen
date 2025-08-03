@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    /* Modern Professional Light Theme */
-    --background: 0 0% 99%;
+    /* Enhanced Professional Light Theme */
+    --background: 210 20% 98%;
     --foreground: 215 25% 15%;
     --card: 0 0% 100%;
     --card-foreground: 215 25% 15%;
@@ -13,16 +13,16 @@
     --popover-foreground: 215 25% 15%;
     --primary: 212 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 20% 98%;
+    --secondary: 210 30% 96%;
     --secondary-foreground: 215 25% 15%;
-    --muted: 210 20% 97%;
+    --muted: 210 25% 95%;
     --muted-foreground: 215 15% 45%;
-    --accent: 213 95% 95%;
+    --accent: 213 95% 94%;
     --accent-foreground: 212 100% 45%;
     --destructive: 0 85% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 20% 90%;
-    --input: 214 20% 95%;
+    --border: 214 25% 88%;
+    --input: 214 25% 93%;
     --ring: 212 100% 50%;
     --radius: 0.75rem;
     
@@ -135,28 +135,43 @@ html[dir="rtl"] {
 }
 
 .stats-card {
-  @apply bg-gradient-to-br from-white to-blue-50/50 dark:from-card dark:to-blue-950/20 
-         border border-border/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-200
-         backdrop-blur-sm;
+  @apply bg-gradient-to-br from-white via-blue-50/30 to-blue-100/40 dark:from-card dark:via-blue-950/10 dark:to-blue-950/20 
+         border-2 border-blue-200/60 dark:border-blue-800/40 rounded-xl shadow-lg hover:shadow-xl 
+         transition-all duration-300 backdrop-blur-sm hover:scale-[1.02];
 }
 
 .success-card {
-  @apply bg-gradient-to-br from-white to-green-50/50 dark:from-card dark:to-green-950/20 
-         border border-green-200/50 dark:border-green-800/50;
+  @apply bg-gradient-to-br from-white via-green-50/30 to-green-100/40 dark:from-card dark:via-green-950/10 dark:to-green-950/20 
+         border-2 border-green-200/60 dark:border-green-800/40 rounded-xl shadow-lg hover:shadow-xl 
+         transition-all duration-300 hover:scale-[1.02];
 }
 
 .warning-card {
-  @apply bg-gradient-to-br from-white to-amber-50/50 dark:from-card dark:to-amber-950/20 
-         border border-amber-200/50 dark:border-amber-800/50;
+  @apply bg-gradient-to-br from-white via-amber-50/30 to-amber-100/40 dark:from-card dark:via-amber-950/10 dark:to-amber-950/20 
+         border-2 border-amber-200/60 dark:border-amber-800/40 rounded-xl shadow-lg hover:shadow-xl 
+         transition-all duration-300 hover:scale-[1.02];
 }
 
 .info-card {
-  @apply bg-gradient-to-br from-white to-cyan-50/50 dark:from-card dark:to-cyan-950/20 
-         border border-cyan-200/50 dark:border-cyan-800/50;
+  @apply bg-gradient-to-br from-white via-cyan-50/30 to-cyan-100/40 dark:from-card dark:via-cyan-950/10 dark:to-cyan-950/20 
+         border-2 border-cyan-200/60 dark:border-cyan-800/40 rounded-xl shadow-lg hover:shadow-xl 
+         transition-all duration-300 hover:scale-[1.02];
+}
+
+.purple-card {
+  @apply bg-gradient-to-br from-white via-purple-50/30 to-purple-100/40 dark:from-card dark:via-purple-950/10 dark:to-purple-950/20 
+         border-2 border-purple-200/60 dark:border-purple-800/40 rounded-xl shadow-lg hover:shadow-xl 
+         transition-all duration-300 hover:scale-[1.02];
+}
+
+.enhanced-card {
+  @apply bg-gradient-to-br from-white via-slate-50/30 to-slate-100/40 dark:from-card dark:via-slate-800/10 dark:to-slate-700/20 
+         border-2 border-slate-200/60 dark:border-slate-700/40 rounded-xl shadow-lg hover:shadow-xl 
+         transition-all duration-300 backdrop-blur-sm hover:scale-[1.01];
 }
 
 .glass-effect {
-  @apply bg-card/80 backdrop-blur-md border border-border/50;
+  @apply bg-card/90 backdrop-blur-lg border-2 border-border/60 shadow-lg;
 }
 
 /* Custom scrollbar */

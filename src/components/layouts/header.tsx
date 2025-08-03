@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   Bell,
-  Search,
   User,
   ChevronRight,
   Calendar,
@@ -33,7 +32,8 @@ export function Header({ className }: HeaderProps) {
   }, []);
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString("en-US", {
+    if (!mounted) return "";
+    return date.toLocaleTimeString("ar-IQ", {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
@@ -41,6 +41,7 @@ export function Header({ className }: HeaderProps) {
   };
 
   const formatDate = (date: Date) => {
+    if (!mounted) return "";
     return date.toLocaleDateString("ar-IQ", {
       weekday: "long",
       year: "numeric",
@@ -86,33 +87,10 @@ export function Header({ className }: HeaderProps) {
           <h1 className="text-2xl font-bold text-foreground">{pageTitle}</h1>
         </div>
 
-        {/* Center - Search Bar */}
-        <div className="flex-1 max-w-md mx-8">
-          <div className="relative">
-            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <input
-              type="text"
-              placeholder="    البحث في النظام..."
-              className="w-full pl-10 pr-4 py-2 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-foreground placeholder:text-muted-foreground"
-            />
-          </div>
-        </div>
-
         {/* Right side - Time, Notifications, Profile */}
-        <div className="flex items-center space-x-reverse space-x-4">
+        <div className="flex items-center space-x-reverse space-x-6">
           {/* Date and Time */}
-          {mounted && (
-            <div className="hidden md:flex flex-col items-end text-sm">
-              <div className="flex items-center text-muted-foreground">
-                <Calendar className="w-4 h-4 ml-1" />
-                <span>{formatDate(currentTime)}</span>
-              </div>
-              <div className="flex items-center text-primary font-mono">
-                <Clock className="w-4 h-4 ml-1" />
-                <span>{formatTime(currentTime)}</span>
-              </div>
-            </div>
-          )}
+
 
           {/* Notifications */}
           <Button variant="ghost" size="icon" className="relative">
